@@ -17,6 +17,7 @@ export const defaultFetch = (
   body?: string
 ): AxiosPromise => {
   let headers: any = {
+    "Content-Type": "application/json",
   };
 
   if (jwt?.access_token) {

@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
 import {User, UserByIdAPI} from "./models";
@@ -18,12 +18,12 @@ export default function App() {
     getUser(userById);
   }, []);
 
-  const getUser = useCallback(async (user: UserByIdAPI) => new Promise<User>(async() => {
+  const getUser = useCallback( async (user: UserByIdAPI) => {
 
 
     console.log(JSON.stringify(user))
     const response = await defaultFetch("/userById",
-      FetchMethod.GET,
+      FetchMethod.POST,
       undefined,
       JSON.stringify(user)
     );
@@ -37,11 +37,13 @@ export default function App() {
       ...oldState,
       user: response.data,
     }))
-  }),[]);
+  }, []);
 
   return (
     <View style={styles.container}>
-      {state.user?.username}
+      <Text>
+        {state.user?.username}
+      </Text>
     </View>
   );
 }

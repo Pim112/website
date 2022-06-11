@@ -1,5 +1,6 @@
 import hashlib
-from flask import Blueprint, request, jsonify, session
+import json
+from flask import Blueprint, request, jsonify
 from shared_functions.user import check_if_user_exists, get_all_users_with_except, parse_user, get_user_from_id
 from database.setupDatabase import User, db
 from flask_jwt_extended import create_access_token
@@ -76,12 +77,11 @@ def get_current_user():
     return jsonify(parse_user(user)), 200
 
 
-@auth.route('/userById', methods=['GET'])
+@auth.route('/userById', methods=['POST'])
 def get_user_by_id():
-    print(request.get_data())
-    user_request = request.get_json()
-    if user_request is not None and 'id' in user_request:
-        user_id = user_request.get(['id'])
+    post_request = request.get_json()
+    if post_request is not None and 'id' in post_request:
+        user_id = post_request['id']
         if user_id:
             user = get_user_from_id(user_id)
             if user:
