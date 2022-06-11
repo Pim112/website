@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
-import {User, UserByIdAPI} from "./models";
+import {User} from "./models";
 import {defaultFetch, FetchMethod} from "./utils/fetch";
 
 interface DataState {
@@ -14,18 +14,14 @@ export default function App() {
   });
 
   useEffect(() => {
-    const userById: UserByIdAPI = {id: 1};
-    getUser(userById);
+    getUser(1);
   }, []);
 
-  const getUser = useCallback( async (user: UserByIdAPI) => {
-
-
-    console.log(JSON.stringify(user))
+  const getUser = useCallback( async (id: number) => {
     const response = await defaultFetch("/userById",
-      FetchMethod.POST,
+      FetchMethod.GET,
       undefined,
-      JSON.stringify(user)
+      {id: id}
     );
 
     if (response.status !== 200) {

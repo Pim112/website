@@ -3,10 +3,6 @@ export type User = {
   username: string;
 };
 
-export type UserByIdAPI = {
-  id: number;
-}
-
 export type JWT = {
   access_token: string;
 };

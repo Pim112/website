@@ -77,16 +77,14 @@ def get_current_user():
     return jsonify(parse_user(user)), 200
 
 
-@auth.route('/userById', methods=['POST'])
+@auth.route('/userById', methods=['GET'])
 def get_user_by_id():
-    post_request = request.get_json()
-    if post_request is not None and 'id' in post_request:
-        user_id = post_request['id']
-        if user_id:
-            user = get_user_from_id(user_id)
-            if user:
-                return jsonify(parse_user(user)), 200
-            return "User not found", 404
+    user_id = request.args.get('id')
+    if user_id:
+        user = get_user_from_id(user_id)
+        if user:
+            return jsonify(parse_user(user)), 200
+        return "User not found", 404
     return "no id in body", 400
 
 

@@ -14,11 +14,13 @@ export const defaultFetch = (
   pathname: string,
   method: FetchMethod,
   jwt?: JWT,
-  body?: string
+  body?: any
 ): AxiosPromise => {
   let headers: any = {
     "Content-Type": "application/json",
   };
+
+  console.log(body);
 
   if (jwt?.access_token) {
     headers = {
@@ -28,6 +30,19 @@ export const defaultFetch = (
   }
   const url = `${basePath}${pathname}`;
 
+  if (method === FetchMethod.GET) {
+    return axios({
+      headers,
+      method,
+      url,
+      params: body,
+    }).catch((reason) => {
+      console.log(
+        `Axios fetch error on ${method} ${url}, error message: ${reason.message}`
+      );
+      return reason.response;
+    });
+  } else {
   return axios({
     headers,
     method,
@@ -39,4 +54,5 @@ export const defaultFetch = (
     );
     return reason.response;
   });
+  }
 };
