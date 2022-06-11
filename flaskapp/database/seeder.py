@@ -12,8 +12,9 @@ def main():
 
     conn = get_connection(os.getenv("host"), os.getenv("user"), os.getenv("password"), os.getenv("database"))
 
+    create_user(conn, "Pim", "Pim", "pim@bor.nl", 2)
     create_user(conn, "admin", "admin", "admin@admin.org", 1)
-    create_user(conn, "pim", "pim", "pim@bor.nl", 2)
+
 
 
 def create_user(conn, username, password, email, pref_id):

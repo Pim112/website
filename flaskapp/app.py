@@ -11,7 +11,7 @@ env_file_path = os.path.join(current_file_path, '.env')
 env_values = dotenv_values(env_file_path)
 
 CORS(app)
-app.register_blueprint(auth)
+app.register_blueprint(auth, url_prefix="/api")
 
 
 if __name__ == '__main__':

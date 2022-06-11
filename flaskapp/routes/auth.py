@@ -1,13 +1,10 @@
 import hashlib
-
 from flask import Blueprint, request, jsonify, session
-from flask_login import login_user, login_required, current_user, logout_user
-from shared_functions.user import check_if_user_exists, get_all_users_with_except, parse_user
+from shared_functions.user import check_if_user_exists, get_all_users_with_except, parse_user, get_user_from_id
 from database.setupDatabase import User, db
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
-
 
 auth = Blueprint('auth', __name__)
 
@@ -77,6 +74,19 @@ def get_current_user():
     user = check_if_user_exists(get_jwt_identity())
 
     return jsonify(parse_user(user)), 200
+
+
+@auth.route('/userById', methods=['GET'])
+def get_user_by_id():
+    user_request = request.get_json()
+    if user_request is not None and 'id' in user_request:
+        user_id = user_request['id']
+        if user_id:
+            user = get_user_from_id(user_id)
+            if user:
+                return jsonify(parse_user(user)), 200
+            return "User not found", 404
+    return "no id in body", 400
 
 
 @auth.route('/users', methods=['GET'])

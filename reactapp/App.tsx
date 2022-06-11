@@ -1,23 +1,47 @@
-import { StyleSheet, View } from 'react-native';
-import {useEffect, useState} from "react";
+import {StyleSheet, View} from 'react-native';
+import {useCallback, useEffect, useState} from "react";
 import axios from "axios";
+import {User, UserByIdAPI} from "./models";
+import {defaultFetch, FetchMethod} from "./utils/fetch";
+
+interface DataState {
+  user?: User,
+}
 
 export default function App() {
-  const [getRequest, setGetRequest] = useState<string>("");
+  const [state, setState] = useState<DataState>({
+    user: undefined,
+  });
 
   useEffect(() => {
-    axios.get("http://127.0.0.1:5000")
-      .then(function (response) {
-        setGetRequest(response.data);
-      })
-      .then(function (error) {
-        console.log(error);
-      })
+    const userById: UserByIdAPI = {id: 1};
+    getUser(userById);
   }, []);
+
+  const getUser = useCallback(async (user: UserByIdAPI) => new Promise<User>(async() => {
+
+
+    console.log(JSON.stringify(user))
+    const response = await defaultFetch("/userById",
+      FetchMethod.GET,
+      undefined,
+      JSON.stringify(user)
+    );
+
+    if (response.status !== 200) {
+      console.log(response);
+      return;
+    }
+
+    setState((oldState) => ({
+      ...oldState,
+      user: response.data,
+    }))
+  }),[]);
 
   return (
     <View style={styles.container}>
-      {getRequest}
+      {state.user?.username}
     </View>
   );
 }

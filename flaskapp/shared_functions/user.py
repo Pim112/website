@@ -20,6 +20,5 @@ def get_user_from_id(id) -> User:
 def parse_user(user) -> {}:
     return {
         'id': user.id,
-        'username': user.username,
-        'email': user.email_address
+        'username': user.username
     }
