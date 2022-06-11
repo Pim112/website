@@ -14,7 +14,8 @@ export default function App() {
   });
 
   useEffect(() => {
-    getUser(1);
+    getUser(1)
+      .then();
   }, []);
 
   const getUser = useCallback( async (id: number) => {

@@ -1,5 +1,5 @@
-import { JWT } from "../models";
-import axios, { AxiosPromise } from "axios";
+import {JWT} from "../models";
+import axios, {AxiosPromise} from "axios";
 
 const basePath = "http://127.0.0.1:5000/api";
 
@@ -19,9 +19,7 @@ export const defaultFetch = (
   let headers: any = {
     "Content-Type": "application/json",
   };
-
-  console.log(body);
-
+  
   if (jwt?.access_token) {
     headers = {
       ...headers,
@@ -29,30 +27,24 @@ export const defaultFetch = (
     };
   }
   const url = `${basePath}${pathname}`;
-
-  if (method === FetchMethod.GET) {
-    return axios({
-      headers,
-      method,
-      url,
-      params: body,
-    }).catch((reason) => {
-      console.log(
-        `Axios fetch error on ${method} ${url}, error message: ${reason.message}`
-      );
-      return reason.response;
-    });
-  } else {
-  return axios({
-    headers,
-    method,
-    url,
-    data: body,
-  }).catch((reason) => {
+  const errorMessage = (reason: { message: any; response: any; }) => {
     console.log(
       `Axios fetch error on ${method} ${url}, error message: ${reason.message}`
     );
     return reason.response;
-  });
-  }
+  };
+  return method !== FetchMethod.GET ?
+    axios({
+      headers,
+      method,
+      url,
+      data: body,
+    }).catch((reason) => errorMessage(reason))
+    :
+    axios({
+      headers,
+      method,
+      url,
+      params: body,
+    }).catch((reason) => errorMessage(reason))
 };
