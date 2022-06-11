@@ -78,9 +78,10 @@ def get_current_user():
 
 @auth.route('/userById', methods=['GET'])
 def get_user_by_id():
+    print(request.get_data())
     user_request = request.get_json()
     if user_request is not None and 'id' in user_request:
-        user_id = user_request['id']
+        user_id = user_request.get(['id'])
         if user_id:
             user = get_user_from_id(user_id)
             if user:

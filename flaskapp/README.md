@@ -14,7 +14,7 @@ Run `pip install -r requirements.txt`
 ## Database setup, Name: Pim
 
 Setup a mariadb server.
-`mysql -u root -p < C:\Users\pim_b\IdeaProjects\website\flaskapp\database\reset-database.sql`
+`mysql -u root -p < .\flaskapp\database\reset-database.sql`
 
 Setup tables: (inside venv)
 `python .\database\setupDatabase.py`
