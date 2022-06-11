@@ -1,13 +1,17 @@
-from flask import Flask
+import os
+import pathlib
+
+from dotenv import dotenv_values
 from flask_cors import CORS
+from database.setupDatabase import app
+from routes.auth import auth
 
-app = Flask(__name__)
+current_file_path = pathlib.Path(__file__).parent.resolve()
+env_file_path = os.path.join(current_file_path, '.env')
+env_values = dotenv_values(env_file_path)
+
 CORS(app)
-
-
-@app.route('/')
-def testdb():
-    return '<h1>hello world.</h1>'
+app.register_blueprint(auth)
 
 
 if __name__ == '__main__':
