@@ -8,8 +8,6 @@ from dotenv import load_dotenv
 
 
 def main():
-    static_dir = get_path_of_static_dir()
-    env_file_path = os.path.join(os.getcwd(), '../.env')
     load_dotenv()
 
     conn = get_connection(os.getenv("host"), os.getenv("user"), os.getenv("password"), os.getenv("database"))

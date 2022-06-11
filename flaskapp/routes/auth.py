@@ -1,26 +1,37 @@
+import hashlib
+
 from flask import Blueprint, request, jsonify, session
+from flask_login import login_user, login_required, current_user, logout_user
+from shared_functions.user import check_if_user_exists, get_all_users_with_except, parse_user
+from database.setupDatabase import User, db
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+
 
 auth = Blueprint('auth', __name__)
 
 LOGGED_IN_USERS = []
 
+
 @auth.route('/login', methods=['POST'])
 def login():
     post_request = request.get_json()
 
-    if post_request is not None and 'username' and 'password' in post_request:
-        username = post_request['username']
+    if post_request is not None and 'email' and 'password' in post_request:
+        email = post_request['email']
         password = post_request['password']
-        user = check_if_user_exists(username)
+        user = check_if_user_exists(email)
 
         if user and user.password == get_password_hash(password):
-            access_token = create_access_token(identity=username)
+            access_token = create_access_token(identity=email)
             LOGGED_IN_USERS.append(access_token)
             return jsonify(access_token=access_token), 200
 
         return 'Username or password is incorrect', 404
 
     return 'Request was either missing username or password', 400
+
 
 @auth.route('/signup', methods=['POST'])
 def signup():
@@ -39,17 +50,14 @@ def signup():
         email = post_request['email']
         password = get_password_hash(password_plain)
 
-        preferences = Preferences(None, None, None, None, None, None)
-        db.session.add(preferences)
-        db.session.commit()
-
-        new_user = User(username, password, email, preferences.id)
+        new_user = User(username, password, email)
         db.session.add(new_user)
-
         db.session.commit()
+
         return "User successfully saved", 200
 
     return "Required fields are missing", 400
+
 
 @auth.route('/logout', methods=['GET'])
 @jwt_required()
@@ -62,12 +70,14 @@ def logout():
 
     return "User is not logged in", 401
 
+
 @auth.route('/user', methods=['GET'])
 @jwt_required()
 def get_current_user():
     user = check_if_user_exists(get_jwt_identity())
 
     return jsonify(parse_user(user)), 200
+
 
 @auth.route('/users', methods=['GET'])
 @jwt_required()
@@ -80,6 +90,7 @@ def get_all_users_except_logged_in():
         output.append(parse_user(to_serialize))
 
     return jsonify(output), 200
+
 
 def get_password_hash(password: str) -> str:
     encoded_password = password.encode()
