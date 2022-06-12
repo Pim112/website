@@ -89,7 +89,19 @@ export default function App() {
     });
   }, [email, password])
   
-  const [text, setText] = useState<string>("")
+  const handleEnterLogin = (e : any) => {
+    if(e.key == "Enter"){
+      loginUser()
+        .then();
+    }
+  };
+  
+  const handleEnterUsername = (e : any) => {
+    if(e.key == "Enter"){
+      changeUsername()
+        .then();
+    }
+  };
   
   return (
     <View style={styles.container}>
@@ -103,6 +115,7 @@ export default function App() {
                defaultValue={email}
                style={{}}
                placeholder={"input email"}
+               onKeyPress={e => handleEnterLogin(e)}
         />
         <Input textContentType="password"
                autoCompleteType="password"
@@ -111,6 +124,7 @@ export default function App() {
                style={{}}
                placeholder={"input password"}
                secureTextEntry
+               onKeyPress={e => handleEnterLogin(e)}
         />
         <Button color="orange" title="Login" onPress={loginUser}/>
         
@@ -120,6 +134,7 @@ export default function App() {
                defaultValue={changeUsernameValue}
                style={{}}
                placeholder={"change username"}
+               onKeyPress={e => handleEnterUsername(e)}
         />
         <Button color="orange" title="Login" onPress={changeUsername}/>
       </Card>

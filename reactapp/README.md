@@ -1,5 +1,5 @@
 # React App
 ## Setup
-expo/yarn install to install dependencies
+`expo install` or `yarn install` to install dependencies
 
-expo start to run the expo server.
+`expo start` to run the expo server.
