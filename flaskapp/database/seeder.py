@@ -12,7 +12,7 @@ def main():
 
     conn = get_connection(os.getenv("host"), os.getenv("user"), os.getenv("password"), os.getenv("database"))
 
-    create_user(conn, "Pim", "Pim", "pim@bor.nl", 2)
+    create_user(conn, "pim", "pim", "pim@bor.nl", 2)
     create_user(conn, "admin", "admin", "admin@admin.org", 1)
 
 
@@ -21,7 +21,7 @@ def create_user(conn, username, password, email, pref_id):
     with conn.cursor() as cursor:
         encoded = password.encode()
         hashed_pass = hashlib.sha256(encoded)
-        sql = f"""INSERT INTO Pim.User(username, password, email_address) VALUES(
+        sql = f"""INSERT INTO Pim.User(username, password, email) VALUES(
             '{username}', '{hashed_pass.hexdigest()}', '{email}');
             """
         cursor.execute(sql)

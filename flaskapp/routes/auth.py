@@ -26,7 +26,7 @@ def login():
             LOGGED_IN_USERS.append(access_token)
             return jsonify(access_token=access_token), 200
 
-        return 'Username or password is incorrect', 404
+        return 'Email or password is incorrect', 404
 
     return 'Request was either missing username or password', 400
 
@@ -85,7 +85,7 @@ def get_user_by_id():
         if user:
             return jsonify(parse_user(user)), 200
         return "User not found", 404
-    return "no id in body", 400
+    return "no id in params", 400
 
 
 @auth.route('/users', methods=['GET'])
@@ -99,6 +99,21 @@ def get_all_users_except_logged_in():
         output.append(parse_user(to_serialize))
 
     return jsonify(output), 200
+
+
+@auth.route('/user/nameChange', methods=['PUT'])
+@jwt_required()
+def user_changes_his_name():
+    new_username = request.json.get("username", None)
+    if new_username:
+        user_by_jwt = get_jwt_identity()
+        user = User.query.filter_by(email=user_by_jwt).first()
+        user.username = new_username
+        db.session.add(user)
+        db.session.commit()
+        return jsonify(parse_user(user)), 200
+    return "no new username provided", 400
+
 
 
 def get_password_hash(password: str) -> str:
