@@ -23,7 +23,7 @@ Run `pip install -r requirements.txt`
 ## Database setup, db-name: Pim
 
 Setup a mariadb server.
-`mysql -u pim -p < .\database\reset-database.sql`
+`mysql -u your_mysql_username -p < .\database\reset-database.sql`
 
 Setup tables: (inside venv)
 `python .\database\setupDatabase.py`
