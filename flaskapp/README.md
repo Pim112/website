@@ -1,4 +1,13 @@
 # Flask app
+
+## Dependencies
+
+`python v3.10.3`
+
+`pip v22.0.4`
+
+`pip install virtualenv`
+
 ## Setup
 Setup a virtualenv or add module with name flaskapp of type Flask.
 
@@ -11,7 +20,7 @@ Run `pip install -r requirements.txt`
 `deactivate` to leave Flask env
 
 
-## Database setup, Name: Pim
+## Database setup, db-name: Pim
 
 Setup a mariadb server.
 `mysql -u pim -p < .\database\reset-database.sql`
