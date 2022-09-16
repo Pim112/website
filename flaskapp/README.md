@@ -1,4 +1,4 @@
-# Flask app
+# Flask app (Windows setup)
 
 ## Dependencies
 
@@ -13,7 +13,7 @@ Setup a virtualenv or add module with name flaskapp of type Flask.
 
 setup `.env` variables
 
-activate virtualenv with `.\Scripts\activate`
+activate virtualenv with `.\venv\Scripts\activate`
 
 Run `pip install -r requirements.txt`
 
@@ -32,3 +32,18 @@ Setup tables: (inside venv)
 
 Seed database: (inside venv)
 `python .\database\seeder.py`
+
+
+## Running
+
+To run open the environment
+`.\venv\Scripts\activate`
+
+Start the flask app
+`flask run`
+
+
+## Seeder data:
+username `pim`
+password `pim`
+email `pim@bor.nl`
